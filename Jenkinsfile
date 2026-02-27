@@ -39,20 +39,12 @@ pipeline {
                 -e SPRING_DATASOURCE_URL=jdbc:mysql://172.17.0.3:3306/vehiculos \
                 -e SPRING_DATASOURCE_USERNAME=root \
                 -e SPRING_DATASOURCE_PASSWORD=root123 \
-                -e SPRING_JPA_HIBERNATE_DDL_AUTO=update \
+                -e SPRING_DATASOURCE_DRIVER_CLASS_NAME=com.mysql.cj.jdbc.Driver \
                 -e SPRING_JPA_DATABASE_PLATFORM=org.hibernate.dialect.MySQLDialect \
+                -e SPRING_JPA_HIBERNATE_DDL_AUTO=update \
                 --name ${CONTAINER_NAME} ${IMAGE_NAME}
                 '''
             }
-        }
-    }
-
-    post {
-        success {
-            echo 'Pipeline ejecutado correctamente'
-        }
-        failure {
-            echo 'Pipeline falló'
         }
     }
 }
