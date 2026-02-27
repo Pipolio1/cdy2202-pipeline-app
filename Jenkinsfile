@@ -3,6 +3,13 @@ pipeline {
 
     stages {
 
+        stage('Stop Old Container') {
+            steps {
+                sh 'docker stop contenedor_vehiculos || true'
+                sh 'docker rm contenedor_vehiculos || true'
+            }
+        }
+
         stage('Build Maven') {
             steps {
                 sh 'mvn clean package -DskipTests'
@@ -17,10 +24,9 @@ pipeline {
 
         stage('Deploy Container') {
             steps {
-                sh 'docker stop contenedor_vehiculos || true'
-                sh 'docker rm contenedor_vehiculos || true'
                 sh 'docker run -d -p 9090:8080 --name contenedor_vehiculos vehiculos-app'
             }
         }
     }
+}
 }
