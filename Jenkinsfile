@@ -3,12 +3,6 @@ pipeline {
 
     stages {
 
-        stage('Clonar código') {
-            steps {
-                echo 'Clonando repositorio...'
-            }
-        }
-
         stage('Build Maven') {
             steps {
                 sh 'mvn clean package -DskipTests'
