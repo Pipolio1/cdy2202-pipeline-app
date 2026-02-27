@@ -4,13 +4,12 @@ pipeline {
     environment {
         IMAGE_NAME = 'vehiculos-app'
         CONTAINER_NAME = 'contenedor_vehiculos'
-        MYSQL_CONTAINER = 'mysql_vehiculos'
         PORT = '9090'
     }
 
     stages {
 
-        stage('Stop Old Containers') {
+        stage('Stop Old Container') {
             steps {
                 sh '''
                 docker stop ${CONTAINER_NAME} || true
@@ -35,11 +34,10 @@ pipeline {
             steps {
                 sh '''
                 docker run -d -p ${PORT}:8080 \
-                --name ${CONTAINER_NAME} \
-                -e SPRING_DATASOURCE_URL=jdbc:mysql://172.17.0.1:3306/vehiculos \
+                -e SPRING_DATASOURCE_URL=jdbc:mysql://172.17.0.3:3306/vehiculos \
                 -e SPRING_DATASOURCE_USERNAME=root \
                 -e SPRING_DATASOURCE_PASSWORD=root123 \
-                ${IMAGE_NAME}
+                --name ${CONTAINER_NAME} ${IMAGE_NAME}
                 '''
             }
         }
@@ -47,10 +45,10 @@ pipeline {
 
     post {
         success {
-            echo 'Deploy completado correctamente'
+            echo 'Pipeline ejecutado correctamente'
         }
         failure {
-            echo 'Error en el pipeline'
+            echo 'Pipeline falló'
         }
     }
 }
