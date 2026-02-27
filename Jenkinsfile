@@ -27,6 +27,6 @@ pipeline {
                 sh 'docker run -d -p 9090:8080 --name contenedor_vehiculos vehiculos-app'
             }
         }
+
     }
-}
 }
