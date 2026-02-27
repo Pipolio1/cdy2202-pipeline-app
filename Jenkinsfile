@@ -2,21 +2,30 @@ pipeline {
     agent any
 
     stages {
-        stage('Build') {
+
+        stage('Clonar código') {
             steps {
-                echo 'Compilando proyecto...'
+                echo 'Clonando repositorio...'
             }
         }
 
-        stage('Test') {
+        stage('Build Maven') {
             steps {
-                echo 'Ejecutando pruebas...'
+                sh 'mvn clean package -DskipTests'
             }
         }
 
-        stage('Deploy') {
+        stage('Build Docker Image') {
             steps {
-                echo 'Desplegando aplicación...'
+                sh 'docker build -t vehiculos-app .'
+            }
+        }
+
+        stage('Deploy Container') {
+            steps {
+                sh 'docker stop contenedor_vehiculos || true'
+                sh 'docker rm contenedor_vehiculos || true'
+                sh 'docker run -d -p 9090:8080 --name contenedor_vehiculos vehiculos-app'
             }
         }
     }
