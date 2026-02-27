@@ -1,9 +1,14 @@
-FROM openjdk:17-jdk-slim
+# Imagen base con Tomcat y Java 17
+FROM tomcat:10-jdk17
 
-WORKDIR /app
+# Elimina aplicaciones por defecto de Tomcat
+RUN rm -rf /usr/local/tomcat/webapps/*
 
-COPY target/*.jar app.jar
+# Copia el WAR generado por Maven
+COPY target/vehiculosBuild.war /usr/local/tomcat/webapps/ROOT.war
 
+# Expone el puerto 8080 dentro del contenedor
 EXPOSE 8080
 
-ENTRYPOINT ["java","-jar","app.jar"]
+# Inicia Tomcat
+CMD ["catalina.sh", "run"]
