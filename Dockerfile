@@ -1,4 +1,9 @@
-FROM tomcat:10.1.23-jre21
-MAINTAINER admin_sucursal
+FROM openjdk:17-jdk-slim
+
+WORKDIR /app
+
+COPY target/*.jar app.jar
+
 EXPOSE 8080
-COPY target/vehiculosBuild.war  /usr/local/tomcat/webapps/vehiculosBuild.war 
+
+ENTRYPOINT ["java","-jar","app.jar"]
